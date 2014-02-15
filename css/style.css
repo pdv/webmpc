@@ -35,8 +35,14 @@ html, body, div, {
 	float: left;
 	border: 2px solid #DDD;
 	border-radius: 5px 10px 5px 10px / 10px 5px 10px 5px;
+
 }
 
+.pad-label {
+	width: 100%;
+	font-family: Arial;
+	font-size: 12pt;
+}
 
 #controls {
 	width: 50%;
@@ -78,4 +84,12 @@ input[type=”range”]::-webkit-slider-thumb {
     border-radius: 50%;
     background: #fff;
     box-shadow: 1px 2px 3px rgba(0,0,0,0.6);
+}
+
+.mode-button {
+	width: 100px;
+	height: 30px;
+	border: 3px solid #777;
+	text-align: center;
+	float: left;
 }

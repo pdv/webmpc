@@ -1,5 +1,4 @@
 var context;
-window.onload = init;
 var kickBuffer;
 var pads;
 
@@ -7,31 +6,46 @@ $(document).ready(function() {
   var editMode = false; // false = performance
   pads = new Array(64);
   
-  $('#performance').click(function() { editMode = false });
-  $('#edit').click(function() { editMode = true });
+  $('#performance').click(function() { 
+    editMode = false;
+    $('#performance').color = "red";
+    $('#edit').color = "black";
+  });
+  $('#edit').click(function() { 
+    editMode = true;
+    $('#performance').color = "black";
+    $('#edit').color = "red";
+  });
 
-  for (int i = 0; i < 64; i++) {
+  for (var i = 0; i < 64; i++) {
     
     // Set the pad's onclick
     $('#' + i).click(function() {
+      var j = $(this).attr("id")
       if (editMode) {
-        displayInfo(i);
+        displayInfo(j);
       } else {
-        playSound(i);
+        playSound(j);
       }
     })
 
+    $('#' + i).html('<span class="pad-label">' + i + '</span>';
+
     pads[i] = {
-      name = i.toString(),
+      'name': i.toString(),
 
     }
   }
 
+  i = 69;
+
 });
 
-displayInfo(var padNumber) {
+function displayInfo(padNumber) {
+
+  console.log(padNumber);
   $('#trigger-name').html(pads[padNumber].name);
-  
+
 }
 
 
