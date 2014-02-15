@@ -29,7 +29,6 @@ $(document).ready(function() {
 
   //Initialize all the pads
   for (var i = 0; i < 64; i++) {
-    
     // Set the pad's onclick
     $('#' + i).mousedown(function() {
       var j = $(this).attr("id")
@@ -39,7 +38,6 @@ $(document).ready(function() {
         playSound(j);
       }
     })
-
     // Names inside pads
     //$('#' + i).html('<span class="pad-label">' + i + '</span>');
     var gainNode = context.createGain();
@@ -49,9 +47,10 @@ $(document).ready(function() {
       'name': "No sound loaded",
       'buffer': null,
       'gainNode': gainNode,
+      'pitch': 1
     };
 
-    dragDropListener(i);
+    dragDropUpload(i);
   }
 
 
@@ -87,6 +86,8 @@ function displayInfo(padNumber) {
   $('.trigger').css("border", "2px solid #DDD");
   $('#trigger-name').html(pads[padNumber].name);
   $('#' + padNumber).css("border", "2px solid red");
+  //$('#detune').value(pads[padNumber].pitch);
+  //$('#volume').value(Math.sqrt(pads[padNumber].gainNode.gain.value));
 }
 
 
@@ -121,6 +122,7 @@ function playSound(i) {
   source.buffer = pads[i].buffer;
   source.connect(pads[i].gainNode);
   source.connect(context.destination);
+  source.playbackRate.value = pads[i].pitch;
   source.start(0);
 }
 
@@ -212,62 +214,70 @@ function failure( error ) {
 
 // UPLOADS ***********************************
 
-function dragDropListener(i) {
-  console.log(i);
-  var drop = $('#' + i); 
+function dragDropUpload(i) {
+  var trigger = $('#' + i);
+  uploading = i;
+  
+  // Cancel default actions for dragover and dragenter
+  $('#' + i).on(
+      'dragover',
+      function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+      }
+  )
+  $('#' + i).on(
+      'dragenter',
+      function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+      }
+  )
 
-  function cancel(e) {
-    if (e.preventDefault) { e.preventDefault(); }
-    return false;
-  }
-
-  // Tells the browser that we *can* drop on this target
-  addEventHandler(drop, 'dragover', cancel);
-  addEventHandler(drop, 'dragenter', cancel);
-
-  addEventHandler(drop, 'drop', function (e) {
-    console.log('yes');
-    e = e || window.event; // get window.event if e argument missing (in IE)   
-    if (e.preventDefault) { e.preventDefault(); } // stops the browser from redirecting off to the image.
-
-    var dt    = e.dataTransfer;
-    var files = dt.files;
-    for (var i=0; i<files.length; i++) {
-      var file = files[i];
-      var reader = new FileReader();
-        
-      //attach event handlers here...
-     
-      reader.readAsDataURL(file);
-      addEventHandler(reader, 'loadend', function(e, file) {
-          var bin           = this.result; 
-          console.log(bin);
-      }.bindToEventHandler(file));
-    }
-    return false;
-  });
-
-  Function.prototype.bindToEventHandler = function bindToEventHandler() {
-    var handler = this;
-    var boundParameters = Array.prototype.slice.call(arguments);
-    //create closure
-    return function(e) {
-        e = e || window.event; // get window.event if e argument missing (in IE)   
-        boundParameters.unshift(e);
-        handler.apply(this, boundParameters);
-    }
-  };
+  // Drop
+  $('#' + i).on(
+      'drop',
+      function(e){
+          if(e.originalEvent.dataTransfer){
+              var files = e.originalEvent.dataTransfer.files;
+              if(files.length) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  handleFiles(files, i);
+              }   
+          }
+      }
+  );
 }
 
-function addEventHandler(obj, evt, handler) {
-    if(obj.addEventListener) {
-        // W3C method
-        obj.addEventListener(evt, handler, false);
-    } else if(obj.attachEvent) {
-        // IE method.
-        obj.attachEvent('on'+evt, handler);
-    } else {
-        // Old school method.
-        obj['on'+evt] = handler;
-    }
+function handleFiles(files, i) {
+  window.URL = window.URL || window.webkitURL;
+  var file = files[0];
+  loadSound(i, window.URL.createObjectURL(file));
+  window.URL.revokeObjectURL(this.arc);
+
+  /**
+  var reader = new FileReader();
+  reader.onload = (function(theFile) {
+    return function(e) {
+      console.log(e.target.result);
+      loadSound(i, e.target.result);
+    };
+  });(file);
+  reader.readAsDataURL(file);
+  
+  **/
+  console.log(pads[i].url);
+}
+
+// ********** CONTROLS ********************
+
+function changeVolume (element) {
+  var volume = element.value;
+  var fraction = parseInt(element.value) / parseInt(element.max);
+  pads[beingEdited].gainNode.gain.value = fraction * fraction;
+}
+
+function changePitch(element) {
+  pads[beingEdited].pitch = element.value
 }
