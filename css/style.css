@@ -1,0 +1,35 @@
+html, body {
+	height: 100%;
+	overflow: hidden;
+}
+
+html, body, div, {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+
+#buttons {
+	width: 50%;
+	height: 100%;
+}
+
+#button-holder {
+	width: 80%;
+	padding-bottom: 80%;
+	margin: 0 auto;
+	margin-top: 10%;
+}
+
+.trigger {
+	width: 11%;
+	padding-bottom: 11%;
+	margin-right: 3px;
+	margin-bottom: 3px;
+	float: left;
+	border: 2px solid #DDD;
+	border-radius: 5px 10px 5px 10px / 10px 5px 10px 5px;
+}
