@@ -10,17 +10,20 @@ html, body, div, {
 	font-size: 100%;
 	font: inherit;
 	vertical-align: baseline;
+	font-family: Arial;
 }
 
 #buttons {
 	width: 50%;
 	height: 100%;
+	float: left;
 }
 
 #button-holder {
 	width: 80%;
 	padding-bottom: 80%;
-	margin: 0 auto;
+	margin-right: 5%;
+	float: right;
 	margin-top: 10%;
 }
 
@@ -32,4 +35,47 @@ html, body, div, {
 	float: left;
 	border: 2px solid #DDD;
 	border-radius: 5px 10px 5px 10px / 10px 5px 10px 5px;
+}
+
+
+#controls {
+	width: 50%;
+	height: 100%;
+	float: left;
+}
+
+#control-panel {
+	width: 80%;
+	margin-left: 5%;
+	margin-top: 20%;
+}
+
+#trigger-name {
+	font-size: 32pt;
+	font-family: Arial;
+	color: red;
+}
+
+label {
+	width: 30px;
+	font-family: Arial;
+	font-size: 16pt;
+}
+
+input[type=”range”] {
+    -webkit-appearance: none;
+    background-color: #EEE;
+    height: 15px;
+    width: 170px;
+    border-radius: 5px;
+    box-shadow: inset 1px 1px 3px rgba(0,0,0,0.6);
+} 
+
+input[type=”range”]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width:20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 1px 2px 3px rgba(0,0,0,0.6);
 }

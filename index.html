@@ -3,6 +3,8 @@
 	<meta charset="utf-8">
 	<title>WebMPC</title>
 	<link rel="stylesheet" href="css/style.css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script src="js/master.js"></script>
 </head>
 
 <body>
@@ -84,7 +86,24 @@
 		</div>
 
 	</div>
+
+
 	<div id="controls">
+	
+		<div id="control-panel">
+			<span id="trigger-name">~TITLE~</span>
+			<form id="control-form">
+				<label for="volume">Volume</label>
+				<input type="range" id="volume" min=0 value=75 max=100 step=1 /><br />
+				<label for="detune">Detune</label>
+				<input type="range" id="detune" min=-24 value=0 max=24 step=1 /><br />
+				<label for="detunefine">Detune (fine)</label>
+				<input type="range" id="detunefine" min=-100 value=0 max=100 step=1 />
+			</form>
+			<div class="mode-button" id="performance">Performance</div>
+			<div class="mode=button" id="edit">Edit</div>
+		</div>
+
 	</div>
 
 
