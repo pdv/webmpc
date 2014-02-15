@@ -28,6 +28,7 @@ html, body, div, {
 }
 
 .trigger {
+	position: relative;
 	width: 11%;
 	padding-bottom: 11%;
 	margin-right: 3px;
@@ -39,9 +40,19 @@ html, body, div, {
 }
 
 .pad-label {
+	position: absolute;
+	top: 35%;
+	padding-top: -12pt;
 	width: 100%;
 	font-family: Arial;
-	font-size: 12pt;
+	font-size: 10pt;
+	text-align: center;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 #controls {
