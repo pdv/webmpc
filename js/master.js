@@ -55,7 +55,7 @@ $(document).ready(function() {
     loadSound(i);
   }
 
-  pads[0].url = "http://soundjax.com/reddo/36915%5Ekick.mp3";
+  pads[0].url = "sounds/kick.wav";
   loadSound(0);
 
 });
@@ -69,24 +69,7 @@ function displayInfo(padNumber) {
 
 
 
-/**
-
-
-function init() {
-
-  // Fix up prefixing
-  try {
-    window.AudioContext = window.AudioContext || window.webkitAudioContext;
-    context = new AudioContext();
-  } catch(e) {
-    alert('Web Audio API is not supported in this browser');
-  }
-
-  loadSound('sounds/kick.wav');
-  var kicker = document.getElementById("kick-trigger");
-  kicker.onclick = function() {playSound(kickBuffer);}
-}
-**/
+// SOUND HANDLING
 
 function loadSound(i) {
   if (!pads[i].url) return;
