@@ -14,16 +14,15 @@ html, body, div, {
 }
 
 #buttons {
-	width: 50%;
+	width: 55%;
 	height: 100%;
 	float: left;
 	min-width: 516px;
 }
 
 #button-holder {
-	width: 80%;
+	width: 70%;
 	padding-bottom: 80%;
-	margin-right: 5%;
 	float: right;
 	margin-top: 10%;
 	min-width: 466px;
@@ -38,6 +37,12 @@ html, body, div, {
 	float: left;
 	border: 2px solid #DDD;
 	border-radius: 5px 10px 5px 10px / 10px 5px 10px 5px;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 	.trigger:hover {
 		border: 2px solid #333;
@@ -66,45 +71,78 @@ html, body, div, {
 }
 
 #control-panel {
-	width: 80%;
+	width: 300px;
 	margin-left: 5%;
 	margin-top: 20%;
+	border: 2px solid #DDD;
+	border-radius: 5px 10px 5px 10px / 10px 5px 10px 5px;
+	padding-top: 3px;
+	padding-bottom: 20px;
+	text-align: center;
+}
+
+hr {
+	border: 0;
+	width: 250px;
+	height: 2px;
+	color: #DDD;
+	background-color: #DDD;
 }
 
 #trigger-name {
-	font-size: 32pt;
+	font-size: 40pt;
 	font-family: Roboto, Arial;
-	color: red;
+	font-weight: bold;
+	color: #FF9900;
+	width: 100%;
+	text-align: center;
 }
 
 label {
 	width: 30px;
 	font-family: Roboto, Arial;
 	font-size: 16pt;
+	margin-top: 30px;
+	text-align: center;
 }
 
-input[type=”range”] {
+input[type="range"] {
     -webkit-appearance: none;
     background-color: #EEE;
-    height: 15px;
-    width: 170px;
-    border-radius: 5px;
-    box-shadow: inset 1px 1px 3px rgba(0,0,0,0.6);
+    height: 20px;
+    width: 200px;
+    border-radius: 1px;
 } 
 
-input[type=”range”]::-webkit-slider-thumb {
+input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     width:20px;
     height: 20px;
-    border-radius: 50%;
-    background: #fff;
-    box-shadow: 1px 2px 3px rgba(0,0,0,0.6);
+    background: #FF9900;
 }
 
-#mode-switch {
-	width: 100px;
-	height: 30px;
-	border: 3px solid #777;
-	text-align: center;
+.mode-switch {
+	margin-top: 30px;
+	height: 43px;
+	font-size: 16pt;
 	float: left;
+	font-family: Roboto, Arial;
+	width: 143px;
+	border: 2px solid #DDD;
+	border-radius: 5px 10px 5px 10px / 10px 5px 10px 5px;
+	padding-top: 9px;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+#perfmode {
+	margin-left: 6px;
+}
+
+#100percent {
+	height: 100%;
 }
