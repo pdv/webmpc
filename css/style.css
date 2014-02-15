@@ -10,7 +10,7 @@ html, body, div, {
 	font-size: 100%;
 	font: inherit;
 	vertical-align: baseline;
-	font-family: Arial;
+	font-family: Roboto, Arial;
 }
 
 #buttons {
@@ -48,7 +48,7 @@ html, body, div, {
 	top: 35%;
 	padding-top: -12pt;
 	width: 100%;
-	font-family: Arial;
+	font-family: Roboto, Arial;
 	font-size: 10pt;
 	text-align: center;
 	-webkit-touch-callout: none;
@@ -73,13 +73,13 @@ html, body, div, {
 
 #trigger-name {
 	font-size: 32pt;
-	font-family: Arial;
+	font-family: Roboto, Arial;
 	color: red;
 }
 
 label {
 	width: 30px;
-	font-family: Arial;
+	font-family: Roboto, Arial;
 	font-size: 16pt;
 }
 
@@ -101,7 +101,7 @@ input[type=”range”]::-webkit-slider-thumb {
     box-shadow: 1px 2px 3px rgba(0,0,0,0.6);
 }
 
-.mode-button {
+#mode-switch {
 	width: 100px;
 	height: 30px;
 	border: 3px solid #777;

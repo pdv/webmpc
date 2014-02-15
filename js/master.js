@@ -1,6 +1,7 @@
 var context;
 var kickBuffer;
 var pads;
+var editMode = false; // false = performance
 
 $(document).ready(function() {
    
@@ -15,17 +16,7 @@ $(document).ready(function() {
   pads = new Array(64);
   
   // Mode buttons
-  var editMode = false; // false = performance
-  $('#performance').click(function() { 
-    editMode = false;
-    $('#performance').color = "red";
-    $('#edit').color = "black";
-  });
-  $('#edit').click(function() { 
-    editMode = true;
-    $('#performance').background-color = "black";
-    $('#edit').background-color = "red";
-  });
+  $('#mode-switch').click(modeSwitch);
 
   //Initialize all the pads
   for (var i = 0; i < 64; i++) {
@@ -38,16 +29,12 @@ $(document).ready(function() {
         playSound(j);
       }
     })
-    // Names inside pads
-    //$('#' + i).html('<span class="pad-label">' + i + '</span>');
-    var gainNode = context.createGain();
-    gainNode.gain.value = 1.0;
 
     pads[i] = {
       'name': "No sound loaded",
       'buffer': null,
-      'gainNode': gainNode,
-      'pitch': 1
+      'gain': 1.0,
+      'pitch': 1.0
     };
 
     dragDropUpload(i);
@@ -55,7 +42,6 @@ $(document).ready(function() {
 
 
   // TESTING ONLY
-  console.log("about to test");
   loadSound(0, "sounds/kick.wav");
   var sounds1 = ["sounds/909BD.wav", "sounds/909rim.wav", "sounds/909snare.wav", "sounds/909clap.wav"];
   var sounds2 = ["sounds/909ltom.wav", "sounds/909mtom.wav", "sounds/909hat.wav", "sounds/909hitom.wav"];
@@ -69,7 +55,6 @@ $(document).ready(function() {
   for (var i = 16; i < 19; i++) {
     loadSound(i, sounds3[i-16]);
   }
-  console.log("done testing");
   // END TESTING
 
   displayInfo(0);
@@ -86,8 +71,8 @@ function displayInfo(padNumber) {
   $('.trigger').css("border", "2px solid #DDD");
   $('#trigger-name').html(pads[padNumber].name);
   $('#' + padNumber).css("border", "2px solid red");
-  //$('#detune').value(pads[padNumber].pitch);
-  //$('#volume').value(Math.sqrt(pads[padNumber].gainNode.gain.value));
+  $('#detune').val(pads[padNumber].pitch);
+  $('#volume').val(pads[padNumber].gain);
 }
 
 
@@ -120,8 +105,11 @@ function playSound(i) {
   if (!pads[i].buffer || i == -1) return;
   var source = context.createBufferSource();
   source.buffer = pads[i].buffer;
-  source.connect(pads[i].gainNode);
-  source.connect(context.destination);
+  console.log(pads[i].gain);
+  var gainNode = context.createGain();
+  source.connect(gainNode);
+  gainNode.connect(context.destination);
+  gainNode.gain.value = pads[i].gain;
   source.playbackRate.value = pads[i].pitch;
   source.start(0);
 }
@@ -145,6 +133,7 @@ function handleMIDIMessage(ev) {
 
   if (trig == 120) {
     select = true;
+    $('#mode-switch').css("background-color", "red");
   }
 
   // Transposing the trigger number
@@ -188,6 +177,7 @@ function handleMIDIMessage(ev) {
     output.send(ev.data);
     if (parseInt(ev.data[1].toString()) == 120) {
       select = false;
+      $('#mode-switch').css("background-color", "white");
     }
   }
 }
@@ -255,29 +245,23 @@ function handleFiles(files, i) {
   var file = files[0];
   loadSound(i, window.URL.createObjectURL(file));
   window.URL.revokeObjectURL(this.arc);
-
-  /**
-  var reader = new FileReader();
-  reader.onload = (function(theFile) {
-    return function(e) {
-      console.log(e.target.result);
-      loadSound(i, e.target.result);
-    };
-  });(file);
-  reader.readAsDataURL(file);
-  
-  **/
-  console.log(pads[i].url);
 }
 
 // ********** CONTROLS ********************
 
 function changeVolume (element) {
-  var volume = element.value;
-  var fraction = parseInt(element.value) / parseInt(element.max);
-  pads[beingEdited].gainNode.gain.value = fraction * fraction;
+  pads[beingEdited].gain = element.value;
 }
 
 function changePitch(element) {
   pads[beingEdited].pitch = element.value
+}
+
+function modeSwitch() {
+  editMode = !editMode;
+  if (!editMode) {
+    $('#mode-switch').css("background-color", "white");
+  } else {
+     $('#mode-switch').css("background-color", "red");
+  }
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <head>
+	<link href='http://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
 	<meta charset="utf-8">
 	<title>WebMPC</title>
 	<link rel="stylesheet" href="css/style.css">
@@ -95,12 +96,11 @@
 			<span id="trigger-name">~TITLE~</span>
 			<form id="control-form">
 				<label for="volume">Volume</label><br />
-				<input type="range" id="volume" min=0 value=100 max=100 step=1 oninput="changeVolume(this);" /><br />
+				<input type="range" id="volume" min=0 value=1 max=1 step=.01 oninput="changeVolume(this);" /><br />
 				<label for="detune">Detune</label><br />
 				<input type="range" id="detune" min=0.25 value=1 max=1.75 step=.05 oninput="changePitch(this);" /><br />
 			</form>
-			<div class="mode-button" id="performance">Performance</div>
-			<div class="mode-button" id="edit">Edit</div>
+			<div id="mode-switch">Edit Mode</div>
 		</div>
 
 	</div>
