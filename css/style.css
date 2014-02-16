@@ -14,14 +14,14 @@ html, body, div, {
 }
 
 #buttons {
-	width: 55%;
+	width: 56%;
 	height: 100%;
 	float: left;
 	min-width: 516px;
 }
 
 #button-holder {
-	width: 70%;
+	width: 68%;
 	padding-bottom: 80%;
 	float: right;
 	margin-top: 10%;
@@ -73,12 +73,14 @@ html, body, div, {
 #control-panel {
 	width: 300px;
 	margin-left: 5%;
-	margin-top: 20%;
 	border: 2px solid #DDD;
 	border-radius: 5px 10px 5px 10px / 10px 5px 10px 5px;
 	padding-top: 3px;
 	padding-bottom: 20px;
 	text-align: center;
+	float:left;
+	clear: left;
+	height:195px;
 }
 
 hr {
@@ -348,3 +350,68 @@ ul {
 		width: 87px;
 		margin-top: -5px;
 	}
+
+#count {
+	margin-top: 10px;
+	width: 300px;
+	height: 43px;
+	border: 2px solid #DDD;
+	border-radius: 5px 10px 5px 10px / 10px 5px 10px 5px;
+	text-align: center;
+	float: left;
+	padding-top: 5px;
+	font-family: Roboto, Arial;
+	font-size: 20pt;
+	text-align: center;
+}
+
+h2 {
+	font-family: Roboto, Arial;
+	font-size: 20pt;
+	float: left;
+}
+
+h4 {
+	margin-top: 20%;
+	font-family: Roboto, Arial;
+	font-size: 12pt;
+	color: #888;
+	float: left;
+	margin-left: 10px;
+	margin-top: 30px;
+}
+
+#titlediv {
+	margin-top: 10%;
+	margin-left: 5%;
+}
+
+#help {
+	position: absolute;
+	width: 100%;
+	margin: 0 auto;
+	bottom: 20px;
+	text-align: center;
+	font-family: Roboto, Arial;
+	font-size: 12pt;
+	color: #888;
+}
+
+#helptext {
+	position: absolute;
+	left: 50%;
+	margin-left: -350px;
+	top: 20%;
+	width: 700px;
+	height: 400px;
+	font-family: Roboto, Arial;
+	padding: 20px;
+	border: 4px solid #888;
+	background-color: white;
+}
+
+#close {
+	color: #888;
+	width: 100%;
+	text-align: center;
+}

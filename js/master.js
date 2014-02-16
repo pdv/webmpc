@@ -57,6 +57,9 @@ $(document).ready(function() {
   preset(1);
   displayInfo(0);
   bindConsole();
+  $('#close').click(function() {$('#helptext').hide()});
+  $('#help').click(function() {$('#helptext').show()});
+
   // Start up MIDI
   navigator.requestMIDIAccess().then(success, failure);
 
@@ -169,16 +172,16 @@ function playSound(i, delay) {
   source.playbackRate.value = pads[i].pitch;
   source.start(delay);
 
-  if (recording && (beat % interval == 0)) {
-    var newBeat = beat;
+  if (recording) {
+    var newBeat = Math.floor(beat / interval);
     if (loopTimer.remaining < ((60000 / bpm) / (quant / 4)) / 2) {
-      newBeat++;
+      newBeat += interval;
     }
     for (j = 0; j < 4; j++) {
       if (queue[newBeat][j] == i) {
         return;
       } else if (queue[newBeat][j] == -1) {
-        queue[beat][j] = i;
+        queue[newBeat][j] = i;
         return;
       }
 
@@ -367,6 +370,8 @@ var loopTimer = $.timer(playQueue, (60000 / bpm) / (quant * 2), false);
 var quantlev = [0, 32, 16, 8, 4];
 var lastpressedstop = false;
 var interval = 1;
+var counterTimer = $.timer(updateCounter, (60000 / bpm) / 4);
+var sixteenths = 0;
 
 function bindConsole() {
 
@@ -379,9 +384,12 @@ function bindConsole() {
       $(this).addClass("active");
 
       if (playing) {
+        counterTimer.stop();
         loopTimer.stop();
+        sixteenths = 0;
         beat = 0;
         loopTimer.play();
+        counterTimer.play();
         resizeQueue($(this).attr("id")[0]);
       } else {
         length = $(this).attr("id")[0];
@@ -401,9 +409,12 @@ function bindConsole() {
       newquant = quantlev[$(this).attr("id")[0]];
       if (playing) {
         loopTimer.stop();
+        counterTimer.stop();
+        sixteenths = 0;
         beat = 0; 
         reQuant(newquant);
         loopTimer.play();
+        counterTimer.play();
       } else {
         quant = newquant;
         resetQueue();
@@ -427,11 +438,15 @@ function bindConsole() {
 
     playing = true;
     if (!paused) {
+      sixteenths = 0;
       beat = 0;
     }
+    paused = false;
     playQueue();
     loopTimer = $.timer(playQueue, (60000 / bpm) / (quant / 4), false);
+    counterTimer = $.timer(updateCounter, (60000 / bpm) / 4);
     loopTimer.play();
+    counterTimer.play();
     lastpressedstop = false;
   });
 
@@ -439,12 +454,14 @@ function bindConsole() {
   $('#pause').click(function() {
     if (paused) {
       loopTimer.play();
+      counterTimer.play();
       $(this).removeClass("active");
       $('#play').addClass("active");
       paused = false;
     } else {
       if (playing) {
         loopTimer.pause();
+        counterTimer.pause();
         $(this).addClass("active");
         $('#play').removeClass("active");
         paused = true;
@@ -470,9 +487,11 @@ function bindConsole() {
       $('#play').removeClass("active");
       $('#pause').removeClass("active");
       beat = 0;
+      sixteenths = 0;
       playing = false;
       paused = false;
       loopTimer.stop();
+      counterTimer.stop();
     }
 
     if (lastpressedstop) {
@@ -502,6 +521,7 @@ function playQueue() {
       }, 100);
     }
   }
+
   beat++;
   if (beat >= (quant * length)) {
     beat = 0;
@@ -509,10 +529,18 @@ function playQueue() {
   
 }
 
+function updateCounter() {
+  sixteenths++;
+  bars = (Math.floor(sixteenths / 16) % length) + 1;
+  $('#counter').html(bars + "." + (Math.floor(sixteenths / 4) % 4 + 1) + "." + (sixteenths % 4 + 1));
+
+}
+
 function changeBPM(element) {
   bpm = element.value;
   $('#bpm-label').html(bpm + " BPM");
   loopTimer.set({time: (60000 / bpm) / (quant / 4)});
+  counterTimer.set({time: (60000 / bpm) / 4});
 }
 
 function resizeQueue(newSize) {
