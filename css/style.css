@@ -44,8 +44,8 @@ html, body, div, {
 	-ms-user-select: none;
 	user-select: none;
 }
-	.trigger:hover {
-		border: 2px solid #333;
+	div.trigger:hover {
+		border: 2px solid #FF9900;
 	}
 
 .pad-label {
@@ -208,7 +208,7 @@ ul {
 	display: box;
 }
 
-li {
+#record-options li {
 	margin-top: -16px;
 	width: 28px;
 	height: 36px;
@@ -245,3 +245,86 @@ li {
 	padding-top: 7px;
 }
 
+#console {
+	margin-top: 10px;
+	width: 300px;
+	height: 43px;
+	border: 2px solid #DDD;
+	border-radius: 5px 10px 5px 10px / 10px 5px 10px 5px;
+	text-align: center;
+	float: left;
+}
+
+#concons {
+	height: 100%;
+	padding: 0;
+	margin: 0;
+}
+
+#concons li {
+	float: left;
+	box-flex: 1;
+}
+
+.rb {
+	border-right: 2px solid #EEE;
+}
+
+#play {
+	padding-left: 30px;
+	padding-top: 9px;
+	height: 34px;
+	width: 43px;
+}
+
+.playbutton {
+	width: 0; 
+	height: 0; 
+	border-top: 12px solid transparent;
+	border-bottom: 12px solid transparent;
+	
+	border-left: 20px solid #888;
+}
+
+#pause {
+	padding-left: 21px;
+	padding-top: 10px;
+	height: 33px;
+	width: 52px;
+}
+
+.pausepole {
+	height: 22px;
+	width: 8px;
+	margin-left: 5px;
+	background-color: #888;
+	float: left;
+}
+
+#stop {
+	padding-left: 21px;
+	padding-top: 10px;
+	height: 33px;
+	width: 52px;
+}
+
+.stopbutton {
+	margin-left: 5px;
+	width: 21px;
+	background-color: #888;
+	height: 22px;
+}
+
+#record {
+	padding-left: 25px;
+	padding-top: 8px;
+	height: 35px;
+	width: 50px;
+}
+
+.recordbutton {
+	border-radius: 50%;
+	width: 25px;
+	height: 25px;
+	background-color: #888;
+}
