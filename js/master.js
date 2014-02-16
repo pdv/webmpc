@@ -21,6 +21,11 @@ $(document).ready(function() {
   $('#editmode').click(function() {modeSwitch(true)});
   $('#perfmode').click(function() {modeSwitch(false)});
 
+  // Presets
+  $('#preset-selector').change(function() {
+    preset($(this).val()[6]);
+  })
+
   //Initialize all the pads
   for (var i = 0; i < 64; i++) {
     // Set the pad's onclick
@@ -46,30 +51,7 @@ $(document).ready(function() {
     dragDropUpload(i);
   }
 
-
-  // TESTING ONLY
-  loadSound(0, "sounds/kick.wav");
-  var sounds1 = ["sounds/909BD.wav", "sounds/909rim.wav", "sounds/909snare.wav", "sounds/909clap.wav"];
-  var sounds2 = ["sounds/909ltom.wav", "sounds/909mtom.wav", "sounds/909hat.wav", "sounds/909hitom.wav"];
-  var sounds3 = ["sounds/909hat2.wav", "sounds/909ride.wav", "sounds/909crash.wav"];
-
-  for (var i = 0; i < 4; i++) {
-    var url = sounds1[i];
-    pads[i].name = url.slice(7,url.length-4);
-    loadSound(i, sounds1[i]);
-  }
-  for (var i = 8; i < 12; i++) {
-    var url = sounds2[i-8];
-    pads[i].name = url.slice(7,url.length-4);
-    loadSound(i, sounds2[i-8]);
-  }
-  for (var i = 16; i < 19; i++) {
-    var url = sounds3[i-16];
-    pads[i].name = url.slice(7,url.length-4);
-    loadSound(i, sounds3[i-16]);
-  }
-  // END TESTING
-
+  preset(1);
   displayInfo(0);
   // Start up MIDI
   navigator.requestMIDIAccess().then(success, failure);
@@ -79,7 +61,7 @@ $(document).ready(function() {
 var beingEdited;
 
 
-// MISC JAWN
+// MISC JAWN ***************************************************
 
 function displayInfo(padNumber) {
   if (padNumber == -1) return;
@@ -93,7 +75,34 @@ function displayInfo(padNumber) {
   $('#detune-label').html("Tune    " + Math.floor((pads[padNumber].pitch-1)*133.33));
 }
 
+function preset(pre) {
+  
+  if (pre == 1) {
+    var sounds1 = ["sounds/tr909/909BD.wav",   "sounds/tr909/909rim.wav",  "sounds/tr909/909snare.wav", "sounds/tr909/909clap.wav"];
+    var sounds2 = ["sounds/tr909/909ltom.wav", "sounds/tr909/909mtom.wav", "sounds/tr909/909hat.wav",   "sounds/tr909/909hitom.wav"];
+    var sounds3 = ["sounds/tr909/909hat2.wav", "sounds/tr909/909ride.wav", "sounds/tr909/909crash.wav", null];
+  } else if (pre == 2) {
+    var sounds1 = ["sounds/trapp/high kick.wav", "sounds/trapp/low kick.wav",  "sounds/trapp/snare.wav", "sounds/trapp/clap.wav"];
+    var sounds2 = ["sounds/trapp/low tom.wav",   "sounds/trapp/cowbell.wav", "sounds/trapp/closed hat.wav",  "sounds/trapp/open hat.wav"];
+    var sounds3 = ["sounds/trapp/rim.wav", "sounds/trapp/high tom.wav", "sounds/trapp/DAMN SON.mp3", null];
+  }
 
+  for (var i = 0; i < 4; i++) {
+    var url = sounds1[i];
+    pads[i].name = url.slice(13,url.length-4);
+    loadSound(i, sounds1[i]);
+  }
+  for (var i = 8; i < 12; i++) {
+    var url = sounds2[i-8];
+    pads[i].name = url.slice(13,url.length-4);
+    loadSound(i, sounds2[i-8]);
+  }
+  for (var i = 16; i < 19; i++) {
+    var url = sounds3[i-16];
+    pads[i].name = url.slice(13,url.length-4);
+    loadSound(i, sounds3[i-16]);
+  }
+}
 
 // SOUND HANDLING **********************************
 
@@ -293,3 +302,4 @@ function modeSwitch(m) {
      $('#perfmode').css("border", "2px solid #DDD");
   }
 }
+
