@@ -18,6 +18,7 @@ $(document).ready(function() {
   pads = new Array(64);
   
   // Mode buttons
+
   $('#editmode').click(function() {modeSwitch(true)});
   $('#perfmode').click(function() {modeSwitch(false)});
 
@@ -25,6 +26,24 @@ $(document).ready(function() {
   $('#preset-selector').change(function() {
     preset($(this).val()[6]);
   })
+
+  // Length/Quantization buttons
+  for (var i = 1; i < 5; i++) {
+    $('#' + i + 'bar').click(function() {
+      for (var j = 1; j < 5; j++) {
+        $('#' + j + 'bar').attr("class", "inactive");
+      }
+      $(this).attr("class", "active");
+    });
+  }
+  for (var i = 1; i < 5; i++) {
+    $('#' + i + 'quant').click(function() {
+      for (var j = 1; j < 5; j++) {
+        $('#' + j + 'quant').attr("class", "inactive");
+      }
+      $(this).attr("class", "active");
+    });
+  }
 
   //Initialize all the pads
   for (var i = 0; i < 64; i++) {

@@ -138,7 +138,9 @@ input[type="range"]::-webkit-slider-thumb {
 	-ms-user-select: none;
 	user-select: none;
 }
-
+	.mode-switch:hover {
+		border: 2px solid #FF9900;
+	}
 #perfmode {
 	margin-left: 6px;
 }
@@ -178,3 +180,68 @@ select {
 	font-size: 14pt;
 	text-align: center;
 }
+
+#record-options {
+	margin-top: 10px;
+	width: 300px;
+	height: 86px;
+	border: 2px solid #DDD;
+	border-radius: 5px 10px 5px 10px / 10px 5px 10px 5px;
+	text-align: center;
+	float: left;
+}
+
+#bars, #quantization {
+	height: 50%;
+	width: 97%;
+	float: left;
+	padding-left: 10px;
+	overflow: hidden;
+}
+
+#bars {
+	border-bottom: 2px solid #DDD;
+}
+
+ul {
+	list-style: none;
+	display: box;
+}
+
+li {
+	margin-top: -16px;
+	width: 28px;
+	height: 36px;
+	padding-top: 10px;
+	border-left: 2px solid #DDD;
+	float: left;
+	font-family: Roboto, Arial;
+	text-align: center;
+	vertical-align: middle;
+	padding-left: 5px;
+	padding-right: 5px;
+	box-flex: 1;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+	li:hover {
+		background-color: #FF9900;
+	}
+
+.active {
+	background-color: #FF9900;
+}
+
+.recops-title {
+	display: inline-block;
+	width: 130px;
+	float: left;
+	font-family: Roboto, Arial;
+	font-size: 14pt;
+	padding-top: 7px;
+}
+
