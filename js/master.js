@@ -36,7 +36,8 @@ $(document).ready(function() {
       } else {
         playSound(j);
       }
-      $(this).css({'border': '2px solid #333'});
+      $(this).css({'border': '2px solid #FF9900'});
+      $(this).css({'background-color': '#FF9900'});
     })
 
     $('#' + i).mouseup(function() {revertBorder($(this));});
@@ -58,7 +59,7 @@ $(document).ready(function() {
 
 });
 
-var beingEdited;
+var beingEdited = 0;
 
 
 // MISC JAWN ***************************************************
@@ -78,30 +79,52 @@ function displayInfo(padNumber) {
 function preset(pre) {
   
   if (pre == 1) {
-    var sounds1 = ["sounds/tr909/909BD.wav",   "sounds/tr909/909rim.wav",  "sounds/tr909/909snare.wav", "sounds/tr909/909clap.wav"];
-    var sounds2 = ["sounds/tr909/909ltom.wav", "sounds/tr909/909mtom.wav", "sounds/tr909/909hat.wav",   "sounds/tr909/909hitom.wav"];
-    var sounds3 = ["sounds/tr909/909hat2.wav", "sounds/tr909/909ride.wav", "sounds/tr909/909crash.wav", null];
+    var sounds1 = ["sounds/r909/909BD.wav",   "sounds/r909/909rim.wav",  "sounds/r909/909snare.wav", "sounds/r909/909clap.wav"];
+    var sounds2 = ["sounds/r909/909ltom.wav", "sounds/r909/909mtom.wav", "sounds/r909/909hat.wav",   "sounds/r909/909hitom.wav"];
+    var sounds3 = ["sounds/r909/909hat2.wav", "sounds/r909/909ride.wav", "sounds/r909/909crash.wav", null];
   } else if (pre == 2) {
-    var sounds1 = ["sounds/trapp/high kick.wav", "sounds/trapp/low kick.wav",  "sounds/trapp/snare.wav", "sounds/trapp/clap.wav"];
-    var sounds2 = ["sounds/trapp/low tom.wav",   "sounds/trapp/cowbell.wav", "sounds/trapp/closed hat.wav",  "sounds/trapp/open hat.wav"];
-    var sounds3 = ["sounds/trapp/rim.wav", "sounds/trapp/high tom.wav", "sounds/trapp/DAMN SON.mp3", null];
+    var sounds1 = ["sounds/trap/high kick.wav", "sounds/trap/low kick.wav",  "sounds/trap/snare.wav", "sounds/trap/clap.wav"];
+    var sounds2 = ["sounds/trap/low tom.wav",   "sounds/trap/cowbell.wav", "sounds/trap/closed hat.wav",  "sounds/trap/open hat.wav"];
+    var sounds3 = ["sounds/trap/rim.wav", "sounds/trap/high tom.wav", "sounds/trap/DAMN SON.mp3", "sounds/trap/shotgun.wav"];
+  } else if (pre == 3) {
+    var sounds1 = ["sounds/rock/kick.wav", "sounds/rock/rim.wav",  "sounds/rock/snare.wav", "sounds/trap/clap.wav"];
+    var sounds2 = ["sounds/rock/mid tom.wav",   "sounds/rock/bell.wav", "sounds/rock/closed hat.wav",  "sounds/rock/crash2.wav"];
+    var sounds3 = ["sounds/rock/crash.wav", "sounds/rock/high tom.wav", "sounds/rock/open hat.wav", "sounds/rock/ride.wav"];
+  } else if (pre == 4) {
+    var sounds1 = ["sounds/jazz/kick.wav", "sounds/jazz/kick2.wav",  "sounds/jazz/snare.wav", "sounds/jazz/rim.wav"];
+    var sounds2 = ["sounds/jazz/floor tom.wav",   "sounds/jazz/bell.wav", "sounds/jazz/closed hat.wav",  "sounds/jazz/semi hat.wav"];
+    var sounds3 = ["sounds/jazz/crash.wav", "sounds/jazz/high tom.wav", "sounds/jazz/open hat.wav", "sounds/jazz/ride.wav"];
+  } else if (pre == 5) {
+    for (var i = 0; i < 64; i++) {
+      pads[i] = {
+        'name': "Empty",
+        'buffer': null,
+        'gain': 1.0,
+        'pitch': 1.0
+      };
+      $('#' + i).html('<span class="pad-label">' + '</span>');
+    };
+  }
+  if (pre < 5) {
+    for (var i = 0; i < 4; i++) {
+      var url = sounds1[i];
+      pads[i].name = url.slice(12,url.length-4);
+      loadSound(i, sounds1[i]);
+    }
+    for (var i = 8; i < 12; i++) {
+      var url = sounds2[i-8];
+      pads[i].name = url.slice(12,url.length-4);
+      loadSound(i, sounds2[i-8]);
+    }
+    for (var i = 16; i < 20; i++) {
+      var url = sounds3[i-16];
+      if (!url) continue;
+      pads[i].name = url.slice(12,url.length-4);
+      loadSound(i, sounds3[i-16]);
+    }
   }
 
-  for (var i = 0; i < 4; i++) {
-    var url = sounds1[i];
-    pads[i].name = url.slice(13,url.length-4);
-    loadSound(i, sounds1[i]);
-  }
-  for (var i = 8; i < 12; i++) {
-    var url = sounds2[i-8];
-    pads[i].name = url.slice(13,url.length-4);
-    loadSound(i, sounds2[i-8]);
-  }
-  for (var i = 16; i < 19; i++) {
-    var url = sounds3[i-16];
-    pads[i].name = url.slice(13,url.length-4);
-    loadSound(i, sounds3[i-16]);
-  }
+  displayInfo(beingEdited);
 }
 
 // SOUND HANDLING **********************************
@@ -190,7 +213,8 @@ function handleMIDIMessage(ev) {
       playSound(trig);
     }
 
-    $('#' + trig).css({'border': '2px solid #333'});
+    $('#' + trig).css({'border': '2px solid #FF9900'});
+    $('#' + trig).css({'background-color': '#FF9900'});
     output.send(ev.data);
   } else {
     revertBorder($('#' + trig));
@@ -208,6 +232,7 @@ function revertBorder(i) {
   } else {
     i.css({'border': '2px solid #DDD'});
   }
+  i.css("background-color", "white");
 }
 
 function success(midiAccess) {
