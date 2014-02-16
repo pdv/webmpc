@@ -6,6 +6,7 @@
 	<link rel="stylesheet" href="css/style.css">
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<script src="js/WebMIDIAPI.js"></script>
+	<script src="js/jquery.timer.js"></script>
 	<script src="js/master.js"></script>
 </head>
 
@@ -145,6 +146,13 @@
 					<li id="stop" class="rb"><div class="stopbutton"></div></li>
 					<li id="record"><div class="recordbutton"></div></li>
 				</ul>
+			</div>
+
+			<div id="tempo">
+				<form id="bpm-form">
+				<label for="bpm-range" id="bpm-label">120 BPM</label>
+				<input type="range" id="bpm" min=40 value=120 max=220 step=1 oninput="changeBPM(this);" />
+			</form>
 			</div>
 		</div>
 

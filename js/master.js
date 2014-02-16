@@ -27,24 +27,6 @@ $(document).ready(function() {
     preset($(this).val()[6]);
   })
 
-  // Length/Quantization buttons
-  for (var i = 1; i < 5; i++) {
-    $('#' + i + 'bar').click(function() {
-      for (var j = 1; j < 5; j++) {
-        $('#' + j + 'bar').attr("class", "inactive");
-      }
-      $(this).attr("class", "active");
-    });
-  }
-  for (var i = 1; i < 5; i++) {
-    $('#' + i + 'quant').click(function() {
-      for (var j = 1; j < 5; j++) {
-        $('#' + j + 'quant').attr("class", "inactive");
-      }
-      $(this).attr("class", "active");
-    });
-  }
-
   //Initialize all the pads
   for (var i = 0; i < 64; i++) {
     // Set the pad's onclick
@@ -53,7 +35,7 @@ $(document).ready(function() {
       if (editMode) {
         displayInfo(j);
       } else {
-        playSound(j);
+        playSound(j, 0);
       }
       $(this).css({'border': '2px solid #FF9900'});
       $(this).css({'background-color': '#FF9900'});
@@ -71,8 +53,10 @@ $(document).ready(function() {
     dragDropUpload(i);
   }
 
+  resetQueue();
   preset(1);
   displayInfo(0);
+  bindConsole();
   // Start up MIDI
   navigator.requestMIDIAccess().then(success, failure);
 
@@ -88,6 +72,11 @@ function displayInfo(padNumber) {
   beingEdited = padNumber;
   $('.trigger').css("border", "2px solid #DDD");
   $('#trigger-name').html(pads[padNumber].name);
+  $('#trigger-name').click(function() {
+    pads[beingEdited].name = prompt("Rename this pad");
+    $('#' + beingEdited).html('<span class="pad-label">' + pads[beingEdited].name + '</span>');
+    $(this).html(pads[beingEdited].name);
+  });
   $('#' + padNumber).css("border", "2px solid #FF9900");
   $('#detune').val(pads[padNumber].pitch);
   $('#volume').val(pads[padNumber].gain);
@@ -169,7 +158,7 @@ function onError() {
   alert('Something went wrong');
 }
 
-function playSound(i) {
+function playSound(i, delay) {
   if (!pads[i].buffer || i == -1) return;
   var source = context.createBufferSource();
   source.buffer = pads[i].buffer;
@@ -178,7 +167,24 @@ function playSound(i) {
   gainNode.connect(context.destination);
   gainNode.gain.value = pads[i].gain;
   source.playbackRate.value = pads[i].pitch;
-  source.start(0);
+  source.start(delay);
+
+  if (recording && (beat % interval == 0)) {
+    var newBeat = beat;
+    if (loopTimer.remaining < ((60000 / bpm) / (quant / 4)) / 2) {
+      newBeat++;
+    }
+    for (j = 0; j < 4; j++) {
+      if (queue[newBeat][j] == i) {
+        return;
+      } else if (queue[newBeat][j] == -1) {
+        queue[beat][j] = i;
+        return;
+      }
+
+    }
+  }
+
 }
 
 
@@ -229,7 +235,7 @@ function handleMIDIMessage(ev) {
     if (select) {
       displayInfo(trig);
     } else {
-      playSound(trig);
+      playSound(trig, 0);
     }
 
     $('#' + trig).css({'border': '2px solid #FF9900'});
@@ -347,3 +353,203 @@ function modeSwitch(m) {
   }
 }
 
+// *************** RECORDING ***************************
+
+var length = 2;
+var quant = 8;
+var bpm = 120;
+var queue = new Array(16);
+var recording = false;
+var beat = 0;
+var playing = false;
+var paused = false;
+var loopTimer = $.timer(playQueue, (60000 / bpm) / (quant * 2), false);
+var quantlev = [0, 32, 16, 8, 4];
+var lastpressedstop = false;
+var interval = 1;
+
+function bindConsole() {
+
+  // LENGTH
+  for (var i = 1; i < 5; i++) {
+    $('#' + i + 'bar').click(function() {
+      for (var j = 1; j < 5; j++) {
+        $('#' + j + 'bar').removeClass("active");
+      }
+      $(this).addClass("active");
+
+      if (playing) {
+        loopTimer.stop();
+        beat = 0;
+        loopTimer.play();
+        resizeQueue($(this).attr("id")[0]);
+      } else {
+        length = $(this).attr("id")[0];
+        resetQueue();
+      }
+      lastpressedstop = false;
+    });
+  }
+
+  // QUANTIZATION
+  for (var i = 1; i < 5; i++) {
+    $('#' + i + 'quant').click(function() {
+      for (var j = 1; j < 5; j++) {
+        $('#' + j + 'quant').removeClass("active");
+      }
+      $(this).addClass("active");
+      newquant = quantlev[$(this).attr("id")[0]];
+      if (playing) {
+        loopTimer.stop();
+        beat = 0; 
+        reQuant(newquant);
+        loopTimer.play();
+      } else {
+        quant = newquant;
+        resetQueue();
+      }
+      lastpressedstop = false;
+    });
+
+  }
+
+
+  // Play
+  $('#play').mousedown(function() {
+    if (playing) {
+      loopTimer.stop();
+    }
+
+    if ($(this).attr("class") != "active") {
+      $(this).addClass("active");
+    }
+    $('#pause').removeClass("active");
+
+    playing = true;
+    if (!paused) {
+      beat = 0;
+    }
+    playQueue();
+    loopTimer = $.timer(playQueue, (60000 / bpm) / (quant / 4), false);
+    loopTimer.play();
+    lastpressedstop = false;
+  });
+
+  // Pause
+  $('#pause').click(function() {
+    if (paused) {
+      loopTimer.play();
+      $(this).removeClass("active");
+      $('#play').addClass("active");
+      paused = false;
+    } else {
+      if (playing) {
+        loopTimer.pause();
+        $(this).addClass("active");
+        $('#play').removeClass("active");
+        paused = true;
+      }
+    }
+    lastpressedstop = false;
+  })
+
+  // Record
+  $('#record').click(function() {
+    if ($(this).hasClass("active")) {
+      $(this).removeClass("active");
+      recording = false;
+    } else {
+      $(this).addClass("active");
+      recording = true;
+    }
+  });
+
+  // Stop
+  $('#stop').click(function() {
+    if ($('#play').addClass("active")) {
+      $('#play').removeClass("active");
+      $('#pause').removeClass("active");
+      beat = 0;
+      playing = false;
+      paused = false;
+      loopTimer.stop();
+    }
+
+    if (lastpressedstop) {
+      resetQueue();
+    } else {
+      lastpressedstop = true;
+    }
+
+  })
+}
+
+function resetQueue() {
+  console.log("cleared, " + (quant*length));
+  for (var i = 0; i < (quant * length); i++) {
+    queue[i] = [-1, -1, -1, -1, -1];
+  }
+}
+
+function playQueue() {
+  console.log("beat: " + beat + " ||| " + queue[beat][0] + " " + queue[beat][1] + " " + queue[beat][2] + " " + queue[beat][3]);
+  for (var i = 0; i < 5; i++) {
+    if (queue[beat][i] != -1) {
+      playSound(queue[beat][i]);
+      $('#' + queue[beat][i]).css({'background-color': '#FF9900'});
+      var colorTimer = window.setTimeout(function() {
+        $('.trigger').css({'background-color': 'white'});
+      }, 100);
+    }
+  }
+  beat++;
+  if (beat >= (quant * length)) {
+    beat = 0;
+  }
+  
+}
+
+function changeBPM(element) {
+  bpm = element.value;
+  $('#bpm-label').html(bpm + " BPM");
+  loopTimer.set({time: (60000 / bpm) / (quant / 4)});
+}
+
+function resizeQueue(newSize) {
+  if (newSize == length) return;
+  if (newSize * quant > queue.length) {
+    var newQueue = new Array(newSize * quant);
+    for (var i = 0; i < (newSize * quant); i++) {
+      if (i < queue.size) {
+        newQueue[i] = queue[i];
+      } else {
+        newQueue[i] = [-1, -1, -1, -1, -1];
+      }
+    }
+  } else {
+    var newQueue = queue.slice(0, newSize * quant);
+  }
+  queue = newQueue;
+  length = newSize;
+}
+
+function reQuant(newQuant) {
+  if (newQuant == quant) return;
+  if (newQuant < quant) {
+    interval = (quant / newQuant);
+    return;
+  } else {
+    var newQueue = new Array(length * newQuant);
+    for (var i = 0; i < queue.length; i++) {
+      newQueue[i * (newQuant / quant)] = queue[i];
+    }
+    for (var i = 0; i < newQueue.length; i++) {
+      if (!newQueue[i]) {
+        newQueue[i] = [-1, -1, -1, -1, -1];
+      }
+    }
+    queue = newQueue;
+  }
+  quant = newQuant;
+  loopTimer.set({time: (60000 / bpm) / (quant / 4)});
+}
