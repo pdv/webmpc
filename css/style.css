@@ -381,19 +381,22 @@ h4 {
 	margin-top: 30px;
 }
 
+h5 {
+	font-size: 10pt;
+	margin-top: 12px;
+}
+
 #titlediv {
 	margin-left: 5%;
 }
 
 #help {
-	position: absolute;
-	width: 100%;
-	margin: 0 auto;
-	bottom: 1%;
+	width: 300px;
 	text-align: center;
 	font-family: Roboto, Arial;
-	font-size: 12pt;
+	font-size: 11pt;
 	color: #888;
+	float: left;
 }
 
 #helptext {
