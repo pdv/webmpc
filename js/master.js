@@ -94,13 +94,13 @@ function preset(pre) {
     var sounds2 = ["sounds/r909/909ltom.wav", "sounds/r909/909mtom.wav", "sounds/r909/909hat.wav",   "sounds/r909/909hitom.wav"];
     var sounds3 = ["sounds/r909/909hat2.wav", "sounds/r909/909ride.wav", "sounds/r909/909crash.wav", null];
   } else if (pre == 2) {
-    var sounds1 = ["sounds/trap/high kick.wav", "sounds/trap/low kick.wav",  "sounds/trap/snare.wav", "sounds/trap/clap.wav"];
-    var sounds2 = ["sounds/trap/low tom.wav",   "sounds/trap/cowbell.wav", "sounds/trap/closed hat.wav",  "sounds/trap/open hat.wav"];
-    var sounds3 = ["sounds/trap/rim.wav", "sounds/trap/high tom.wav", "sounds/trap/DAMN SON.mp3", "sounds/trap/shotgun.wav"];
+    var sounds1 = ["sounds/trap/high kick.wav", "sounds/trap/low kick.wav",  "sounds/trap/snare.WAV", "sounds/trap/clap.WAV"];
+    var sounds2 = ["sounds/trap/low tom.WAV",   "sounds/trap/cowbell.wav", "sounds/trap/closed hat.WAV",  "sounds/trap/open hat.wav"];
+    var sounds3 = ["sounds/trap/rim.WAV", "sounds/trap/high tom.WAV", "sounds/trap/DAMN SON.mp3", "sounds/trap/shotgun.wav"];
   } else if (pre == 3) {
-    var sounds1 = ["sounds/rock/kick.wav", "sounds/rock/rim.wav",  "sounds/rock/snare.wav", "sounds/trap/clap.wav"];
-    var sounds2 = ["sounds/rock/mid tom.wav",   "sounds/rock/bell.wav", "sounds/rock/closed hat.wav",  "sounds/rock/crash2.wav"];
-    var sounds3 = ["sounds/rock/crash.wav", "sounds/rock/high tom.wav", "sounds/rock/open hat.wav", "sounds/rock/ride.wav"];
+    var sounds1 = ["sounds/rock/kick.WAV", "sounds/rock/rim.WAV",  "sounds/rock/snare.WAV", "sounds/trap/clap.WAV"];
+    var sounds2 = ["sounds/rock/mid tom.WAV",   "sounds/rock/bell.WAV", "sounds/rock/closed hat.WAV",  "sounds/rock/crash2.WAV"];
+    var sounds3 = ["sounds/rock/crash.WAV", "sounds/rock/high tom.WAV", "sounds/rock/open hat.WAV", "sounds/rock/ride.WAV"];
   } else if (pre == 4) {
     var sounds1 = ["sounds/jazz/kick.wav", "sounds/jazz/kick2.wav",  "sounds/jazz/snare.wav", "sounds/jazz/rim.wav"];
     var sounds2 = ["sounds/jazz/floor tom.wav",   "sounds/jazz/bell.wav", "sounds/jazz/closed hat.wav",  "sounds/jazz/semi hat.wav"];
