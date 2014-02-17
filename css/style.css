@@ -14,18 +14,18 @@ html, body, div, {
 }
 
 #buttons {
-	width: 56%;
+	width: 65.3%;
 	height: 100%;
 	float: left;
-	min-width: 516px;
+	min-width: 602px;
 }
 
 #button-holder {
 	width: 68%;
 	padding-bottom: 80%;
 	float: right;
-	margin-top: 10%;
-	min-width: 466px;
+	margin-top: 50px;
+	min-width: 600px;
 }
 
 .trigger {
@@ -65,9 +65,9 @@ html, body, div, {
 }
 
 #controls {
-	width: 40%;
-	height: 100%;
 	float: left;
+	-webkit-transform: scale(0.8);
+	margin-left: -20px;
 }
 
 #control-panel {
@@ -382,7 +382,6 @@ h4 {
 }
 
 #titlediv {
-	margin-top: 10%;
 	margin-left: 5%;
 }
 
@@ -390,7 +389,7 @@ h4 {
 	position: absolute;
 	width: 100%;
 	margin: 0 auto;
-	bottom: 20px;
+	bottom: 1%;
 	text-align: center;
 	font-family: Roboto, Arial;
 	font-size: 12pt;
