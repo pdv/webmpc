@@ -265,13 +265,15 @@ function revertBorder(i) {
 
 function success(midiAccess) {
   midi = midiAccess;
-  inputs = midi.inputs();
-  if (inputs.length > 0) {
-    input = inputs[0];    // LAUNCHPAD
+  inputs = midi.inputs;
+  if (inputs.size > 0) {
+  	var inputsIter = inputs.values();	// Iterator
+  	input = inputsIter.next().value;    // LAUNCHPAD
     input.addEventListener("midimessage", handleMIDIMessage);
-    outputs = midi.outputs();
-    if (outputs.length) {
-      output = outputs[1]; // LAUNCHPAD, hopefully
+    outputs = midi.outputs;
+    if (outputs.size) {
+      var outputsIter = outputs.values();
+      output = outputsIter.next().value; // LAUNCHPAD, hopefully
       //output.send( [0xb0, 0x00, 0x7f] );
     }
   }
